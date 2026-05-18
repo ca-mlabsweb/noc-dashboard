@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAMILO · HYBRID PRO ANNUAL PLAN</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #161616;
+    --border: #222222;
+    --accent: #e8ff00;
+    --accent2: #ff4d00;
+    --accent3: #00d4ff;
+    --text: #f0f0f0;
+    --muted: #666;
+    --green: #00ff88;
+    --red: #ff3b3b;
+    --orange: #ff8c00;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--dark);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .header-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--accent);
+  }
+  .header-info {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+    line-height: 1.6;
+  }
+  .header-info span { color: var(--accent); }
+
+  /* NAV TABS */
+  .nav-tabs {
+    background: var(--dark);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 0 24px;
+    gap: 0;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 14px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* MAIN LAYOUT */
+  .main { padding: 24px; max-width: 1200px; margin: 0 auto; }
+
+  /* SECTION */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* BLOCKS OVERVIEW */
+  .blocks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .block-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .block-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+  }
+  .block-card.chest::before { background: var(--accent); }
+  .block-card.back::before { background: var(--accent3); }
+  .block-card.legs::before { background: var(--green); }
+  .block-card.shoulders::before { background: var(--orange); }
+  .block-card.arms::before { background: var(--accent2); }
+  .block-card.core::before { background: var(--red); }
+  .block-card.cutting::before { background: #ff00aa; }
+
+  .block-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    color: var(--border);
+    position: absolute;
+    top: 10px; right: 16px;
+    line-height: 1;
+  }
+  .block-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: var(--muted);
+  }
+  .block-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .block-dates {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .block-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .meta-pill {
+    font-size: 11px;
+    padding: 3px 10px;
+    border: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+  }
+  .block-progress-bar {
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+    margin-top: 14px;
+    position: relative;
+  }
+  .block-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 1s ease;
+  }
+
+  /* WEEKLY SCHEDULE */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 768px) {
+    .week-grid { grid-template-columns: repeat(2, 1fr); }
+    .blocks-grid { grid-template-columns: 1fr; }
+  }
+  .day-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 14px;
+    min-height: 140px;
+    position: relative;
+  }
+  .day-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .day-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .day-type.heavy { color: var(--accent); }
+  .day-type.volume { color: var(--accent3); }
+  .day-type.legs { color: var(--green); }
+  .day-type.isolation { color: var(--orange); }
+  .day-type.cardio { color: var(--accent2); }
+  .day-type.rest { color: var(--muted); }
+  .day-exercises {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .day-rest-indicator {
+    position: absolute;
+    bottom: 12px; right: 12px;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+
+  /* TRACKING TABLE */
+  .tracking-section { margin-bottom: 32px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+  }
+  .section-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .block-selector {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .block-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .block-btn:hover, .block-btn.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(232,255,0,0.05);
+  }
+
+  /* EXERCISE TRACKING */
+  .exercise-group {
+    background: var(--card);
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .exercise-group-header {
+    background: var(--dark);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .exercise-group-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    flex: 1;
+  }
+  .exercise-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .sets-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .sets-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .sets-table td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+  .sets-table tr:last-child td { border-bottom: none; }
+  .sets-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .weight-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    width: 70px;
+    padding: 2px 0;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .weight-input:focus { border-color: var(--accent); }
+  .weight-input::placeholder { color: var(--border); }
+
+  .pr-indicator {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    background: rgba(232,255,0,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(232,255,0,0.3);
+  }
+
+  .volume-display {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+  }
+
+  /* SUPPLEMENT PROTOCOL */
+  .supp-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .supp-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+  }
+  .supp-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .supp-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .supp-dose {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .supp-timing {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .supp-timing strong { color: var(--text); }
+  .supp-note {
+    margin-top: 10px;
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+
+  /* PROTEIN TIMING */
+  .timeline {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 32px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -30px; top: 50%;
+    transform: translateY(-50%);
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .timeline-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .timeline-event {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .timeline-detail {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .timeline-supp-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .supp-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .supp-pill.active { border-color: var(--accent3); color: var(--accent3); }
+  .supp-pill.protein { border-color: var(--green); color: var(--green); }
+
+  /* METRICS DASHBOARD */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .metric-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 16px;
+    text-align: center;
+  }
+  .metric-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px;
+    line-height: 1;
+    margin-bottom: 4px;
+    color: var(--accent);
+  }
+  .metric-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .metric-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* PR TRACKER */
+  .pr-table-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .pr-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .pr-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 12px 16px;
+    text-align: left;
+    background: var(--dark);
+    border-bottom: 1px solid var(--border);
+  }
+  .pr-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+  .pr-table tr:last-child td { border-bottom: none; }
+  .pr-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .pr-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    width: 80px;
+    padding: 2px 0;
+    outline: none;
+  }
+  .pr-input:focus { border-color: var(--accent); }
+
+  /* SAVE BTN */
+  .save-btn {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 3px;
+    padding: 12px 32px;
+    background: var(--accent);
+    color: var(--black);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 16px;
+  }
+  .save-btn:hover { background: #fff; }
+  .save-confirm {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    margin-left: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .save-confirm.show { opacity: 1; }
+
+  /* NOTES */
+  .notes-area {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    width: 100%;
+    min-height: 80px;
+    padding: 12px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .notes-area:focus { border-color: var(--accent); }
+
+  /* INFO BOX */
+  .info-box {
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .info-box-icon { font-size: 16px; margin-top: 1px; }
+  .info-box-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .info-box-text strong { color: var(--text); }
+  .info-box.accent { border-color: rgba(232,255,0,0.2); background: rgba(232,255,0,0.03); }
+
+  /* CUTTING OVERLAY */
+  .cutting-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    padding: 3px 8px;
+    background: rgba(255,0,170,0.1);
+    border: 1px solid rgba(255,0,170,0.3);
+    color: #ff00aa;
+    text-transform: uppercase;
+    margin-left: 8px;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">CAMILO · HYBRID PRO</div>
+  <div class="header-info">
+    <div>18+ YRS POWERLIFTING · 20K PR</div>
+    <div>PLAN ANUAL <span>2026</span></div>
+  </div>
+</div>
+
+<div class="nav-tabs">
+  <div class="tab active" onclick="showTab('overview')">BLOQUES ANUALES</div>
+  <div class="tab" onclick="showTab('weekly')">RUTINA SEMANAL</div>
+  <div class="tab" onclick="showTab('tracking')">TRACKING DE PESOS</div>
+  <div class="tab" onclick="showTab('protocol')">PROTEÍNA + TIMING</div>
+  <div class="tab" onclick="showTab('supps')">SUPLEMENTOS</div>
+  <div class="tab" onclick="showTab('prs')">MIS PRs</div>
+</div>
+
+<!-- SECTION 1: OVERVIEW -->
+<div class="main">
+<div id="tab-overview" class="section active">
+  <div class="info-box accent">
+    <div class="info-box-icon">⚡</div>
+    <div class="info-box-text">
+      <strong>Plan Híbrido PRO 2026</strong> — 6 bloques de 60 días cada uno. Estructura Heavy + Volumen + Aislamiento por músculo. Última fase integra protocolo CUTTING con LISS/HIIT para definición sin pérdida de fuerza. Basado en tu base de powerlifting y capacidad aeróbica de 20K.
+    </div>
+  </div>
+
+  <div class="blocks-grid" id="blocks-grid"></div>
+
+  <div class="section-header">
+    <div>
+      <div class="section-title">ESTRUCTURA SEMANAL BASE</div>
+      <div class="section-sub">Aplica en todos los bloques · El enfoque muscular rota cada 60 días</div>
+    </div>
+  </div>
+
+  <div style="background:var(--card);border:1px solid var(--border);padding:20px;margin-bottom:24px;">
+    <table style="width:100%;border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);">DÍA</th>
+          <th style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);">TIPO</th>
+          <th style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);">SERVICIO</th>
+          <th style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--muted);padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);">CARDIO</th>
+        </tr>
+      </thead>
+      <tbody id="weekly-table-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SECTION 2: WEEKLY DETAIL -->
+<div id="tab-weekly" class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-title">RUTINA SEMANAL DETALLADA</div>
+      <div class="section-sub">Basado en Calendario Híbrido PRO + Cutting Routine</div>
+    </div>
+  </div>
+  <div class="week-grid" id="week-detail-grid"></div>
+</div>
+
+<!-- SECTION 3: TRACKING -->
+<div id="tab-tracking" class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-title">TRACKING DE CARGAS</div>
+      <div class="section-sub">Registra pesos por serie · El volumen total se calcula automáticamente</div>
+    </div>
+  </div>
+  <div class="block-selector" id="tracking-block-selector"></div>
+  <div id="tracking-exercises"></div>
+  <button class="save-btn" onclick="saveTracking()">GUARDAR SESIÓN</button>
+  <span class="save-confirm" id="save-confirm">✓ GUARDADO</span>
+</div>
+
+<!-- SECTION 4: PROTEIN TIMING -->
+<div id="tab-protocol" class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-title">PROTOCOLO DIARIO</div>
+      <div class="section-sub">Ingesta proteica + Timing de suplementos según tu horario de entrenamiento</div>
+    </div>
+  </div>
+
+  <div class="metrics-grid" style="margin-bottom:24px;">
+    <div class="metric-card">
+      <div class="metric-value">180+</div>
+      <div class="metric-label">Proteína g/día</div>
+      <div class="metric-sub">~2.2g/kg (estimado 82kg)</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">5</div>
+      <div class="metric-label">Ingestas/día</div>
+      <div class="metric-sub">Distribución óptima</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">30g</div>
+      <div class="metric-label">Pre-entreno</div>
+      <div class="metric-sub">45–60 min antes</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">40g</div>
+      <div class="metric-label">Post-entreno</div>
+      <div class="metric-sub">Dentro de 30 min</div>
+    </div>
+  </div>
+
+  <div class="section-header"><div><div class="section-title">TIMELINE DÍA DE ENTRENO</div></div></div>
+  <div class="timeline" id="training-day-timeline"></div>
+
+  <div class="section-header"><div><div class="section-title">TIMELINE DÍA DE DESCANSO</div></div></div>
+  <div class="timeline" id="rest-day-timeline"></div>
+</div>
+
+<!-- SECTION 5: SUPPS -->
+<div id="tab-supps" class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-title">PROTOCOLO DE SUPLEMENTOS</div>
+      <div class="section-sub">Stack optimizado para hipertrofia + definición + longevidad</div>
+    </div>
+  </div>
+  <div class="supp-grid" id="supp-grid"></div>
+</div>
+
+<!-- SECTION 6: PRs -->
+<div id="tab-prs" class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-title">REGISTRO DE PRs</div>
+      <div class="section-sub">Actualiza tus marcas personales · Progresión acumulada del año</div>
+    </div>
+  </div>
+  <div class="pr-table-wrap">
+    <table class="pr-table" id="pr-table"></table>
+  </div>
+  <button class="save-btn" onclick="savePRs()">GUARDAR PRs</button>
+  <span class="save-confirm" id="pr-confirm">✓ PRs ACTUALIZADOS</span>
+
+  <div style="margin-top:32px;">
+    <div class="section-header"><div><div class="section-title">NOTAS DE SESIÓN</div></div></div>
+    <textarea class="notes-area" id="session-notes" placeholder="Registra observaciones de la sesión, cómo te sentiste, cambios en la dieta, sueño..."></textarea>
+    <button class="save-btn" onclick="saveNotes()" style="margin-top:8px;">GUARDAR NOTAS</button>
+    <span class="save-confirm" id="notes-confirm">✓ NOTAS GUARDADAS</span>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ---- DATA ----
+const BLOCKS = [
+  { id:'chest', title:'PECHO', tag:'Bloque 1 · 60 días', dates:'Mayo – Jun 2026', focus:'Heavy + Volumen', type:'chest', days:'60', meta:['Heavy 4x5-6','Volumen 3x10-12','Incline Priority'] },
+  { id:'back', title:'ESPALDA', tag:'Bloque 2 · 60 días', dates:'Jul – Ago 2026', focus:'Heavy + Volumen', type:'back', days:'60', meta:['Pull Heavy','Rows Volume','Lat Width'] },
+  { id:'legs', title:'PIERNA', tag:'Bloque 3 · 60 días', dates:'Sep – Oct 2026', focus:'Fuerza + Estabilidad', type:'legs', days:'60', meta:['Back Squat 4x6','RDL Heavy','Unilateral'] },
+  { id:'shoulders', title:'HOMBROS', tag:'Bloque 4 · 60 días', dates:'Nov – Dic 2026', focus:'Volumen + Detalle', type:'shoulders', days:'60', meta:['OHP Heavy','Lateral x5','Rear Delt'] },
+  { id:'arms', title:'BRAZOS', tag:'Bloque 5 · 60 días', dates:'Ene – Feb 2027', focus:'Aislamiento', type:'arms', days:'60', meta:['Curl 4x10','Pushdown 4x12','Incline Curl'] },
+  { id:'core', title:'CORE + CUTTING', tag:'Bloque 6 · 60 días', dates:'Mar – Abr 2027', focus:'Definición', type:'cutting', days:'60', meta:['Full Body','LISS Cardio','Core 2x/week'] },
+];
+
+const WEEKLY = [
+  { day:'LUN', name:'LUNES', type:'heavy', typeLabel:'HEAVY', service:'Fuerza Máxima', cardio:'—', exercises:['Bench/OHP/Squat 4x5','Peso muerto 3x5','Accesorio Heavy 3x8'] },
+  { day:'MAR', name:'MARTES', type:'volume', typeLabel:'VOLUMEN', service:'Hipertrofia', cardio:'LISS 25 min', exercises:['Compound 3x10-12','Isolation 3x12-15','Drop Sets finales'] },
+  { day:'MIÉ', name:'MIÉRCOLES', type:'legs', typeLabel:'PIERNA', service:'Fuerza + Estabilidad', cardio:'—', exercises:['Back Squat 4x6-8','Bulgarian 3x10','Leg Curl 3x12','Calf 4x15'] },
+  { day:'JUE', name:'JUEVES', type:'volume', typeLabel:'AISLAMIENTO', service:'Detalle Muscular', cardio:'LISS 25 min', exercises:['Cables 4x15-20','Máquinas 3x15','Superset final'] },
+  { day:'VIE', name:'VIERNES', type:'isolation', typeLabel:'AISLAMIENTO', service:'Detalle Muscular', cardio:'Opcional HIIT 20 min', exercises:['Ejercicio ppal 4x8','Cable flyes 3x20','Laterals 5x15'] },
+  { day:'SÁB', name:'SÁBADO', type:'cardio', typeLabel:'CARDIO/CORE', service:'Definición', cardio:'LISS 30-35 min', exercises:['Hanging Leg Raise 3x12','Ab Crunch 3x15','Plank 3x60s'] },
+  { day:'DOM', name:'DOMINGO', type:'rest', typeLabel:'DESCANSO', service:'Recuperación', cardio:'—', exercises:['Movilidad activa','Foam roll','Descanso total'] },
+];
+
+const EXERCISES_BY_BLOCK = {
+  chest: [
+    { name:'BENCH PRESS', badge:'COMPOUND HEAVY', sets:[{s:'1',r:'5'},{s:'2',r:'5'},{s:'3',r:'5'},{s:'4',r:'5'}] },
+    { name:'INCLINE DB PRESS', badge:'VOLUMEN', sets:[{s:'1',r:'8'},{s:'2',r:'8'},{s:'3',r:'8'}] },
+    { name:'WEIGHTED DIPS', badge:'COMPOUND', sets:[{s:'1',r:'10'},{s:'2',r:'10'},{s:'3',r:'10'}] },
+    { name:'CABLE FLYES', badge:'AISLAMIENTO', sets:[{s:'1',r:'15'},{s:'2',r:'15'},{s:'3',r:'15'}] },
+    { name:'SKULL CRUSHERS', badge:'TRICEPS', sets:[{s:'1',r:'10'},{s:'2',r:'10'},{s:'3',r:'10'}] },
+  ],
+  back: [
+    { name:'PULL-UPS / LAT PULLDOWN', badge:'COMPOUND HEAVY', sets:[{s:'1',r:'8'},{s:'2',r:'8'},{s:'3',r:'8'},{s:'4',r:'8'}] },
+    { name:'BARBELL ROW', badge:'ESPALDA GROSOR', sets:[{s:'1',r:'8'},{s:'2',r:'8'},{s:'3',r:'8'},{s:'4',r:'8'}] },
+    { name:'ONE ARM DB ROW', badge:'VOLUMEN', sets:[{s:'1',r:'12'},{s:'2',r:'12'},{s:'3',r:'12'}] },
+    { name:'FACE PULLS', badge:'MOVILIDAD', sets:[{s:'1',r:'15'},{s:'2',r:'15'},{s:'3',r:'15'}] },
+    { name:'EZ-BAR CURL', badge:'BÍCEPS', sets:[{s:'1',r:'10'},{s:'2',r:'10'},{s:'3',r:'10'}] },
+  ],
+  legs: [
+    { name:'BACK SQUAT', badge:'FUERZA MÁXIMA', sets:[{s:'1',r:'6'},{s:'2',r:'6'},{s:'3',r:'6'},{s:'4',r:'6'}] },
+    { name:'LEG PRESS (PIE BAJO)', badge:'QUAD DOMINANTE', sets:[{s:'1',r:'12'},{s:'2',r:'12'},{s:'3',r:'12'}] },
+    { name:'BULGARIAN SPLIT SQUAT', badge:'UNILATERAL', sets:[{s:'1',r:'10'},{s:'2',r:'10'},{s:'3',r:'10'}] },
+    { name:'ROMANIAN DEADLIFT', badge:'ISQUIOS + GLÚTEOS', sets:[{s:'1',r:'8'},{s:'2',r:'8'},{s:'3',r:'8'},{s:'4',r:'8'}] },
+    { name:'HIP THRUST', badge:'GLÚTEO', sets:[{s:'1',r:'10'},{s:'2',r:'10'},{s:'3',r:'10'}] },
+    { name:'STANDING CALF RAISE', badge:'GEMELOS', sets:[{s:'1',r:'15'},{s:'2',r:'15'},{s:'3',r:'15'},{s:'4',r:'15'}] },
+  ],
+  shoulders: [
+    { name:'OVERHEAD PRESS', badge:'COMPOUND HEAVY', sets:[{s:'1',r:'5'},{s:'2',r:'5'},{s:'3',r:'5'},{s:'4',r:'5'}] },
+    { name:'DB LATERAL RAISES', badge:'DELTOIDE LATERAL', sets:[{s:'1',r:'15'},{s:'2',r:'15'},{s:'3',r:'15'},{s:'4',r:'15'},{s:'5',r:'15+DROP'}] },
+    { name:'REAR DELT FLYES', badge:'DELTOIDE POSTERIOR', sets:[{s:'1',r:'20'},{s:'2',r:'20'},{s:'3',r:'20'}] },
+    { name:'FACE PULLS', badge:'MANGUITO', sets:[{s:'1',r:'15'},{s:'2',r:'15'},{s:'3',r:'15'}] },
+    { name:'ROPE PUSHDOWNS', badge:'TRÍCEPS', sets:[{s:'1',r:'15'},{s:'2',r:'15'},{s:'3',r:'15'}] },
+  ],
+  arms: [
+    { name:'EZ-BAR CURL', badge:'BÍCEPS HEAVY', sets:[{s:'1',r:'10'},{s:'2',r:'10'},{s:'3',r:'10'},{s:'4',r:'10'}] },
+    { name:'INCLINE DB CURL', badge:'PICO BÍCEPS', sets:[{s:'1',r:'12'},{s:'2',r:'12'},{s:'3',r:'12'}] },
+    { name:'ROPE PUSHDOWNS', badge:'TRÍCEPS CABLE', sets:[{s:'1',r:'15'},{s:'2',r:'15'},{s:'3',r:'15'},{s:'4',r:'15'}] },
+    { name:'SKULL CRUSHERS', badge:'TRÍCEPS HEAVY', sets:[{s:'1',r:'10'},{s:'2',r:'10'},{s:'3',r:'10'}] },
+    { name:'HAMMER CURL', badge:'BRAQUIAL', sets:[{s:'1',r:'12'},{s:'2',r:'12'},{s:'3',r:'12'}] },
+  ],
+  core: [
+    { name:'HANGING LEG RAISES', badge:'CORE ABS', sets:[{s:'1',r:'12'},{s:'2',r:'12'},{s:'3',r:'12'}] },
+    { name:'AB CRUNCH MACHINE', badge:'CORE', sets:[{s:'1',r:'15'},{s:'2',r:'15'},{s:'3',r:'15'}] },
+    { name:'PLANK', badge:'ESTABILIDAD', sets:[{s:'1',r:'60s'},{s:'2',r:'60s'},{s:'3',r:'60s'}] },
+    { name:'CHEST PRESS MACHINE', badge:'CUTTING METABOLIC', sets:[{s:'1',r:'15'},{s:'2',r:'15'},{s:'3',r:'15'}] },
+    { name:'CABLE FLYES', badge:'DEFINICIÓN', sets:[{s:'1',r:'20'},{s:'2',r:'20'},{s:'3',r:'20'}] },
+  ],
+};
+
+const SUPPS = [
+  {
+    icon:'🐟',
+    name:'OMEGA-3 + EPA/DHA',
+    dose:'3–4g EPA+DHA / día',
+    timing:'Con desayuno (1–2 cáps) + con cena (1–2 cáps). Siempre con comida grasa.',
+    notes:'Antiinflamatorio esencial para recuperación. Mejora sensibilidad a insulina. Relevante en cutting para preservar músculo.',
+    color:'#00d4ff'
+  },
+  {
+    icon:'💪',
+    name:'CREATINA MONOHIDRATO',
+    dose:'5g / día · Sin ciclar',
+    timing:'Post-entreno con carbohidratos. En días de descanso: con el desayuno. Consistencia > timing perfecto.',
+    notes:'Con tu base de powerlifting, la creatina mejora 1RM y recuperación inter-series. No requiere fase de carga con 18+ años de base.',
+    color:'var(--accent)'
+  },
+  {
+    icon:'🌿',
+    name:'HYDROXYCUT ELITE',
+    dose:'Según etiqueta · Máx 3 meses',
+    timing:'Pre-entreno matutino en ayunas o 30 min antes. NO combinar con otro estimulante. Ciclar: 8 sem ON / 4 sem OFF.',
+    notes:'Termogénico. Usar principalmente en Bloque 6 (Cutting). Monitorea frecuencia cardíaca. Puede elevar presión en entrenos pesados.',
+    color:'var(--accent2)'
+  },
+  {
+    icon:'🍎',
+    name:'VINAGRE DE MANZANA',
+    dose:'15–30ml (1–2 cdas) diluido',
+    timing:'Antes de las comidas principales (antes de almuerzo y cena). Diluir siempre en 200ml agua.',
+    notes:'Mejora sensibilidad a insulina y control glucémico post-ingesta. Beneficio indirecto en composición corporal. Nunca puro.',
+    color:'var(--orange)'
+  },
+  {
+    icon:'🦠',
+    name:'PROBIÓTICOS EN POLVO',
+    dose:'1 dosis / día',
+    timing:'Con el desayuno o post-cena. Preferiblemente alejado de antibióticos. En ayunas mejora colonización.',
+    notes:'Mejora absorción de nutrientes, fundamental en fases de alto volumen de ingesta proteica. Reduce inflamación intestinal.',
+    color:'var(--green)'
+  },
+];
+
+const TRAINING_TIMELINE = [
+  { time:'07:00', event:'Despertar + Hidratación', detail:'500ml agua + electrolitos', supps:['Probióticos (ayunas)','Vinagre manzana (diluido 200ml)'] },
+  { time:'07:30', event:'Desayuno — Ingesta 1', detail:'40–50g proteína · Carbohidratos complejos · Grasas saludables', supps:['Omega-3 (2 cáps)','Creatina 5g (si es mañana)'] },
+  { time:'09:00', event:'Pre-Entreno — Activación', detail:'30g proteína rápida + carbohidratos simples (banana, avena). 45–60 min antes del entreno.', supps:['Hydroxycut Elite (si fase cutting)'] },
+  { time:'10:00', event:'ENTRENO', detail:'Heavy / Volumen / Aislamiento según día. Hidratación constante intra-workout.', supps:[] },
+  { time:'11:30', event:'Post-Entreno — Ventana Anabólica', detail:'40g proteína whey + 60–80g carbohidratos rápidos INMEDIATO. Dentro de 30 minutos.', supps:['Creatina 5g (con carbos)'] },
+  { time:'14:00', event:'Almuerzo — Ingesta 3', detail:'40–50g proteína sólida · Arroz/papa/pasta · Vegetales · Grasas mínimas', supps:['Vinagre manzana (antes de comer)'] },
+  { time:'17:00', event:'Merienda — Ingesta 4', detail:'30g proteína · Fruta o carbohidrato moderado · Mantener músculo activo', supps:[] },
+  { time:'20:00', event:'Cena — Ingesta 5', detail:'40–50g proteína caseína o carne roja · Vegetales · Grasas saludables', supps:['Omega-3 (2 cáps)','Probióticos (si no fue en ayunas)'] },
+  { time:'22:00', event:'Pre-Sueño', detail:'Opcional: 20–30g caseína o queso cottage para síntesis nocturna. CRÍTICO en fases de volumen.', supps:[] },
+];
+
+const REST_TIMELINE = [
+  { time:'08:00', event:'Despertar', detail:'500ml agua + Vinagre de manzana diluido', supps:['Probióticos','Vinagre manzana'] },
+  { time:'09:00', event:'Desayuno — Ingesta 1', detail:'40–50g proteína · Carbohidratos moderados (no post-entreno, reducir)', supps:['Omega-3 (2 cáps)','Creatina 5g'] },
+  { time:'13:00', event:'Almuerzo — Ingesta 2', detail:'40–50g proteína sólida · Carbohidratos moderados · Vegetales', supps:['Vinagre manzana (antes)'] },
+  { time:'16:00', event:'Merienda — Ingesta 3', detail:'25–30g proteína · Fruta · Nueces', supps:[] },
+  { time:'20:00', event:'Cena — Ingesta 4', detail:'40g proteína · Vegetales · Grasas saludables · Sin carbos simples', supps:['Omega-3 (2 cáps)'] },
+  { time:'22:00', event:'Pre-Sueño', detail:'30g caseína. En días de descanso es AÚN MÁS importante la ingesta nocturna.', supps:[] },
+];
+
+const PRS = [
+  { lift:'BENCH PRESS', unit:'kg', current:'', goal:'' },
+  { lift:'SQUAT', unit:'kg', current:'', goal:'' },
+  { lift:'DEADLIFT', unit:'kg', current:'', goal:'' },
+  { lift:'OVERHEAD PRESS', unit:'kg', current:'', goal:'' },
+  { lift:'WEIGHTED DIP', unit:'kg añadido', current:'', goal:'' },
+  { lift:'PULL-UPS', unit:'reps / kg añadido', current:'', goal:'' },
+  { lift:'HIP THRUST', unit:'kg', current:'', goal:'' },
+  { lift:'RUNNING 20K', unit:'min:seg', current:'', goal:'' },
+  { lift:'RUNNING 5K', unit:'min:seg', current:'', goal:'' },
+  { lift:'PESO CORPORAL', unit:'kg', current:'', goal:'' },
+];
+
+// ---- RENDER ----
+function init() {
+  renderBlocks();
+  renderWeeklyTable();
+  renderWeekDetail();
+  renderBlockSelector();
+  renderTrackingBlock('chest');
+  renderTimelines();
+  renderSupps();
+  renderPRs();
+  loadSaved();
+}
+
+function renderBlocks() {
+  const g = document.getElementById('blocks-grid');
+  g.innerHTML = BLOCKS.map((b,i) => `
+    <div class="block-card ${b.type}">
+      <div class="block-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="block-tag">${b.tag}</div>
+      <div class="block-title">${b.title} ${b.type==='core'?'<span class="cutting-badge">CUTTING</span>':''}</div>
+      <div class="block-dates">${b.dates}</div>
+      <div class="block-meta">
+        ${b.meta.map(m=>`<div class="meta-pill">${m}</div>`).join('')}
+      </div>
+      <div class="block-progress-bar"><div class="block-progress-fill" style="width:0%"></div></div>
+    </div>
+  `).join('');
+}
+
+function renderWeeklyTable() {
+  const tbody = document.getElementById('weekly-table-body');
+  tbody.innerHTML = WEEKLY.map(w => `
+    <tr>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-family:'Bebas Neue',sans-serif;font-size:16px;">${w.name}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-family:'DM Mono',monospace;font-size:11px;" class="day-type ${w.type}">${w.typeLabel}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;">${w.service}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid var(--border);font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);">${w.cardio}</td>
+    </tr>
+  `).join('');
+}
+
+function renderWeekDetail() {
+  const g = document.getElementById('week-detail-grid');
+  g.innerHTML = WEEKLY.map(w => `
+    <div class="day-card">
+      <div class="day-name">${w.name}</div>
+      <div class="day-type ${w.type}">${w.typeLabel}</div>
+      <div class="day-exercises">${w.exercises.map(e=>`· ${e}`).join('<br>')}</div>
+      ${w.cardio !== '—' ? `<div style="margin-top:10px;font-family:'DM Mono',monospace;font-size:10px;color:var(--accent3);">▶ ${w.cardio}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function renderBlockSelector() {
+  const sel = document.getElementById('tracking-block-selector');
+  sel.innerHTML = BLOCKS.map((b,i) => `
+    <button class="block-btn ${i===0?'active':''}" onclick="selectTrackingBlock('${b.id}', this)">${b.title}</button>
+  `).join('');
+}
+
+function selectTrackingBlock(id, el) {
+  document.querySelectorAll('.block-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderTrackingBlock(id);
+}
+
+function renderTrackingBlock(blockId) {
+  const exercises = EXERCISES_BY_BLOCK[blockId] || [];
+  const saved = JSON.parse(localStorage.getItem('tracking_'+blockId) || '{}');
+
+  const container = document.getElementById('tracking-exercises');
+  container.innerHTML = exercises.map((ex, ei) => {
+    const rows = ex.sets.map((set, si) => {
+      const key = `${blockId}_${ei}_${si}`;
+      const savedW = saved[key] || '';
+      const repsNum = parseInt(set.r) || 0;
+      const vol = savedW ? (parseFloat(savedW) * repsNum).toFixed(0) : '—';
+      return `
+        <tr>
+          <td style="color:var(--muted);">Serie ${set.s}</td>
+          <td>${set.r} reps</td>
+          <td><input type="number" class="weight-input" id="w_${blockId}_${ei}_${si}" placeholder="0" value="${savedW}" oninput="updateVolume('${blockId}',${ei},${si},'${set.r}')"></td>
+          <td><span class="volume-display" id="vol_${blockId}_${ei}_${si}">${vol !== '—' && savedW ? vol + ' kg·r' : '—'}</span></td>
+          <td id="pr_${blockId}_${ei}_${si}"></td>
+        </tr>
+      `;
+    }).join('');
+
+    return `
+      <div class="exercise-group">
+        <div class="exercise-group-header">
+          <div class="exercise-group-name">${ex.name}</div>
+          <div class="exercise-badge">${ex.badge}</div>
+        </div>
+        <table class="sets-table">
+          <thead>
+            <tr>
+              <th>SERIE</th><th>REPS</th><th>PESO (kg)</th><th>VOLUMEN</th><th>STATUS</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateVolume(blockId, ei, si, reps) {
+  const input = document.getElementById(`w_${blockId}_${ei}_${si}`);
+  const volEl = document.getElementById(`vol_${blockId}_${ei}_${si}`);
+  const prEl = document.getElementById(`pr_${blockId}_${ei}_${si}`);
+  const w = parseFloat(input.value) || 0;
+  const r = parseInt(reps) || 0;
+  if (w > 0) {
+    volEl.textContent = (w * r).toFixed(0) + ' kg·r';
+    // Check PR from localStorage
+    const prKey = `pr_${blockId}_${ei}`;
+    const prevPR = parseFloat(localStorage.getItem(prKey) || '0');
+    if (w > prevPR) {
+      prEl.innerHTML = '<span class="pr-indicator">★ NUEVO PR</span>';
+      localStorage.setItem(prKey, w);
+    } else {
+      prEl.textContent = '';
+    }
+  } else {
+    volEl.textContent = '—';
+    prEl.textContent = '';
+  }
+}
+
+function saveTracking() {
+  const activeBlock = document.querySelector('.block-btn.active');
+  if (!activeBlock) return;
+  const blockId = activeBlock.textContent === 'PECHO' ? 'chest' :
+                  activeBlock.textContent === 'ESPALDA' ? 'back' :
+                  activeBlock.textContent === 'PIERNA' ? 'legs' :
+                  activeBlock.textContent === 'HOMBROS' ? 'shoulders' :
+                  activeBlock.textContent === 'BRAZOS' ? 'arms' : 'core';
+
+  const exercises = EXERCISES_BY_BLOCK[blockId] || [];
+  const data = {};
+  exercises.forEach((ex, ei) => {
+    ex.sets.forEach((_, si) => {
+      const input = document.getElementById(`w_${blockId}_${ei}_${si}`);
+      if (input && input.value) data[`${blockId}_${ei}_${si}`] = input.value;
+    });
+  });
+  localStorage.setItem('tracking_'+blockId, JSON.stringify(data));
+  const confirm = document.getElementById('save-confirm');
+  confirm.classList.add('show');
+  setTimeout(() => confirm.classList.remove('show'), 2500);
+}
+
+function loadSaved() {
+  // Load notes
+  const notes = localStorage.getItem('session_notes');
+  if (notes) document.getElementById('session-notes').value = notes;
+  // Load PR inputs
+  PRS.forEach((pr, i) => {
+    const cur = localStorage.getItem(`pr_input_cur_${i}`) || '';
+    const goal = localStorage.getItem(`pr_input_goal_${i}`) || '';
+    const curEl = document.getElementById(`pr_cur_${i}`);
+    const goalEl = document.getElementById(`pr_goal_${i}`);
+    if (curEl) curEl.value = cur;
+    if (goalEl) goalEl.value = goal;
+  });
+}
+
+function renderTimelines() {
+  renderTimeline('training-day-timeline', TRAINING_TIMELINE);
+  renderTimeline('rest-day-timeline', REST_TIMELINE);
+}
+
+function renderTimeline(id, data) {
+  const el = document.getElementById(id);
+  el.innerHTML = data.map(item => `
+    <div class="timeline-item">
+      <div class="timeline-time">${item.time}</div>
+      <div class="timeline-event">${item.event}</div>
+      <div class="timeline-detail">${item.detail}</div>
+      ${item.supps.length ? `
+        <div class="timeline-supp-row">
+          ${item.supps.map(s => `<div class="supp-pill active">${s}</div>`).join('')}
+        </div>
+      ` : ''}
+    </div>
+  `).join('');
+}
+
+function renderSupps() {
+  const g = document.getElementById('supp-grid');
+  g.innerHTML = SUPPS.map(s => `
+    <div class="supp-card">
+      <span class="supp-icon">${s.icon}</span>
+      <div class="supp-name">${s.name}</div>
+      <div class="supp-dose">${s.dose}</div>
+      <div class="supp-timing">${s.timing}</div>
+      <div class="supp-note">${s.notes}</div>
+    </div>
+  `).join('');
+}
+
+function renderPRs() {
+  const table = document.getElementById('pr-table');
+  table.innerHTML = `
+    <thead>
+      <tr>
+        <th>EJERCICIO / MÉTRICA</th>
+        <th>UNIDAD</th>
+        <th>PR ACTUAL</th>
+        <th>META 2027</th>
+        <th>DELTA</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${PRS.map((pr, i) => `
+        <tr>
+          <td style="font-weight:500;">${pr.lift}</td>
+          <td style="color:var(--muted);font-size:11px;">${pr.unit}</td>
+          <td><input type="text" class="pr-input" id="pr_cur_${i}" placeholder="—" oninput="calcDelta(${i})"></td>
+          <td><input type="text" class="pr-input" id="pr_goal_${i}" placeholder="—" oninput="calcDelta(${i})"></td>
+          <td id="pr_delta_${i}" style="color:var(--green);font-size:12px;">—</td>
+        </tr>
+      `).join('')}
+    </tbody>
+  `;
+}
+
+function calcDelta(i) {
+  const cur = parseFloat(document.getElementById(`pr_cur_${i}`)?.value);
+  const goal = parseFloat(document.getElementById(`pr_goal_${i}`)?.value);
+  const delta = document.getElementById(`pr_delta_${i}`);
+  if (delta && !isNaN(cur) && !isNaN(goal)) {
+    const diff = goal - cur;
+    delta.textContent = (diff >= 0 ? '+' : '') + diff.toFixed(1);
+    delta.style.color = diff >= 0 ? 'var(--green)' : 'var(--red)';
+  }
+}
+
+function savePRs() {
+  PRS.forEach((_, i) => {
+    localStorage.setItem(`pr_input_cur_${i}`, document.getElementById(`pr_cur_${i}`)?.value || '');
+    localStorage.setItem(`pr_input_goal_${i}`, document.getElementById(`pr_goal_${i}`)?.value || '');
+  });
+  const confirm = document.getElementById('pr-confirm');
+  confirm.classList.add('show');
+  setTimeout(() => confirm.classList.remove('show'), 2500);
+}
+
+function saveNotes() {
+  localStorage.setItem('session_notes', document.getElementById('session-notes').value);
+  const confirm = document.getElementById('notes-confirm');
+  confirm.classList.add('show');
+  setTimeout(() => confirm.classList.remove('show'), 2500);
+}
+
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+init();
+</script>
+</body>
+</html>
